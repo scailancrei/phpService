@@ -77,15 +77,15 @@ class postal
      }
    }
   /**
-  * Método que nos permite devolver el codigo iso a partir de su nombre
+  * Método que nos permite devolver la provincia a partir del codigo postal
   * @access public
-  * @param string $nombre Código del pais
+  * @param string $cod_postal codigo postal
   * @return string $resultado Resultado de la consulta
   * @throws exception $ex lanza una excepción si se produce un error
   */  
-  public function getIso($cod_postal) 
+  public function getProvincia($cod_postal) 
    {
-    $sql = "SELECT iso FROM paises where nombre = '$nombre';";
+    $sql = "SELECT provincia.provincia FROM provincia, poblacion where ((poblacion.postal = '$cod_postal') and (poblacion.idprovincia = provincia.idprovincia));";
     $resultado = $this->ejecutaConsulta($sql);
     if ($resultado) 
      {
@@ -98,14 +98,14 @@ class postal
      }
    }
   /**
-  * Método que nos permite devolver el codigo iso y nombre de los paises
+  * Método que nos permite devolver una lista con las postales, las poblaciones y la provincias
   * @access public
   * @return array $datos Resultado de la consulta
   * @throws exception $ex lanza una excepción si se produce un error
   */     
   public function getListado() 
    {
-    $sql = "SELECT iso,nombre FROM paises;";
+    $sql = "SELECT poblacion.postal, poblacion.poblacion, provincia.provincia FROM poblacion, provincia WHERE poblacion.idprovincia = provincia.idprovincia order by poblacion.postal";
     $resultado = $this->ejecutaConsulta($sql);
     if ($resultado) 
      {
